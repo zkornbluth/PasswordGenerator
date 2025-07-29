@@ -13,7 +13,17 @@ struct PasswordGeneratorApp: App {
         MenuBarExtra {
                     ContentView()
                         .frame(width: 300, height: 300)
-                        
+                        .overlay(alignment: .topTrailing) {
+                                    Button(
+                                        "Quit",
+                                        systemImage: "xmark.circle.fill"
+                                    ) {
+                                        NSApp.terminate(nil)
+                                    }
+                                    .labelStyle(.iconOnly)
+                                    .buttonStyle(.plain)
+                                    .padding(6)
+                                }
         } label: {
             Label {
                     Text("Password Generator")
