@@ -13,6 +13,7 @@ struct ContentView: View {
     @State private var numbers = "1234567890"
     @State private var includeUppercase = false
     @State private var uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    @State private var includeLowercase = true
     @State private var lowercase = "abcdefghijklmnopqrstuvwxyz"
     @State private var includeSpecial = false
     @State private var special = "!@.-_*"
@@ -23,7 +24,10 @@ struct ContentView: View {
     @State private var passwordBlank = true
     
     func generatePassword() {
-        var letters = lowercase
+        var letters = ""
+        if includeLowercase {
+            letters += lowercase
+        }
         if includeUppercase {
             letters += uppercase
         }
@@ -60,6 +64,25 @@ struct ContentView: View {
         pasteboard.setString(text, forType: .string)
     }
     
+    private func handleToggleChange(for binding: Binding<Bool>, newValue: Bool) {
+            // If the toggle was just turned OFF (newValue is false)
+            if !newValue {
+                let checkedCount = [includeUppercase, includeLowercase, includeNumbers, includeSpecial].filter { $0 }.count
+
+                // If, after this toggle was turned off, there are now zero true toggles,
+                // revert this toggle back to true.
+                if checkedCount == 0 {
+                    // We need to dispatch this to the next run loop cycle
+                    // to avoid modifying state during a view update.
+                    DispatchQueue.main.async {
+                        binding.wrappedValue = true
+                    }
+                    print("At least one option must be selected.")
+                    // You could also present an alert here
+                }
+            }
+        }
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -82,14 +105,36 @@ struct ContentView: View {
                 isEditing = editing
             }
             Spacer()
-            Toggle(isOn: $includeUppercase) {
-                Text("Include uppercase letters")
+            VStack(alignment: .leading) {
+                Toggle(isOn: $includeUppercase) {
+                    Text("Include uppercase letters")
+                }
+                .onChange(of: includeUppercase) { oldValue, newValue in
+                                handleToggleChange(for: $includeUppercase, newValue: newValue)
+                            }
+                Toggle(isOn: $includeLowercase) {
+                    Text("Include lowercase letters")
+                }
+                .onChange(of: includeLowercase) { oldValue, newValue in
+                                handleToggleChange(for: $includeLowercase, newValue: newValue)
+                            }
+                Toggle(isOn: $includeNumbers) {
+                    Text("Include numbers")
+                }
+                .onChange(of: includeNumbers) { oldValue, newValue in
+                                handleToggleChange(for: $includeNumbers, newValue: newValue)
+                            }
+                Toggle(isOn: $includeSpecial) {
+                    Text("Include special characters")
+                }
+                .onChange(of: includeSpecial) { oldValue, newValue in
+                                handleToggleChange(for: $includeSpecial, newValue: newValue)
+                            }
             }
-            Toggle(isOn: $includeNumbers) {
-                Text("Include numbers")
-            }
-            Toggle(isOn: $includeSpecial) {
-                Text("Include special characters")
+            .onAppear {
+                if !includeUppercase && !includeLowercase && !includeNumbers && !includeSpecial {
+                    includeLowercase = true
+                }
             }
             Toggle(isOn: $avoidRepeats) {
                 Text("Avoid repeating characters (3+)")
