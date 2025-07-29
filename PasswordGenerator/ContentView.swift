@@ -15,7 +15,7 @@ struct ContentView: View {
     @State private var uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     @State private var lowercase = "abcdefghijklmnopqrstuvwxyz"
     @State private var includeSpecial = false
-    @State private var special = "~`!@#$%^&*()_-+={[}]|:;\\\"'<,>.?/"
+    @State private var special = "!@.-_*"
     @State private var avoidRepeats = false
     @State private var length = 8.0
     @State private var isEditing = false
