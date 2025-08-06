@@ -11,6 +11,16 @@ Double-click on the .dmg in your Downloads folder. In the popup, drag Password G
 
 In Applications, double-click Password Generator to run.
 
+If you get a warning like this one:
+
+<img width="246" height="253" alt="Screenshot 2025-08-06 at 4 33 08 PM" src="https://github.com/user-attachments/assets/e339a10c-4503-4e08-abd9-a0afc41fe8bf" />
+
+Click "Done", then open your System Settings and go to Privacy & Security. Scroll down to Security and click "Open Anyway". 
+
+<img width="472" height="187" alt="Screenshot 2025-08-06 at 4 34 10 PM" src="https://github.com/user-attachments/assets/e201bbb3-c0fc-405c-a569-9f4848f041b7" />
+
+In the popup, click "Open Anyway" and use Touch ID or enter your password when prompted to allow the app to open.
+
 ## Using the utility
 All interactions are through the macOS menu bar.
 
