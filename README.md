@@ -5,7 +5,7 @@ Use this utility to generate passwords of a specified length and with the charac
 ## Installation
 *Password Generator requires macOS 14.6 (Sonoma) or later*
 
-Click on `PasswordGenerator-1.0.1.dmg` and click the Download button, or click [here](https://github.com/zkornbluth/PasswordGenerator/releases/download/v1.0.1/PasswordGenerator-1.0.1.dmg).
+Click on `PasswordGenerator-1.0.2.dmg` and click the Download button, or click [here](https://github.com/zkornbluth/PasswordGenerator/releases/download/v1.0.2/PasswordGenerator-1.0.2.dmg).
 
 Double-click on the .dmg in your Downloads folder. In the popup, drag Password Generator into your Applications folder.
 
