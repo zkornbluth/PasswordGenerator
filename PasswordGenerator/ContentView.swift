@@ -37,14 +37,23 @@ struct ContentView: View {
         if includeSpecial {
             letters += special
         }
-        var hasRepeats = true // Guarantee we run the loop once
-        var newPassword = "" // local variable here so we don't save a bad password
-        while hasRepeats {
+        
+        var gotGoodPassword = false
+        var newPassword = ""
+        while !gotGoodPassword {
             newPassword = String((0..<Int(length)).map{ _ in letters.randomElement()! })
+            // Check for repeats if avoidRepeats, if true, try again
             if avoidRepeats {
-                hasRepeats = checkForRepeats(newPassword)
-            } else { // Don't actually care about repeats, so just exit the loop and use this password
-                hasRepeats = false
+                let hasRepeats = checkForRepeats(newPassword)
+                if hasRepeats {
+                    continue
+                }
+            }
+            
+            // Check that all 'include' types are actually in the password
+            let hasAllTypes = checkForIncluded(newPassword, includeUppercase: includeUppercase, includeLowercase: includeLowercase, includeNumbers: includeNumbers, includeSpecial: includeSpecial)
+            if hasAllTypes {
+                gotGoodPassword = true
             }
         }
         password = newPassword
@@ -56,6 +65,65 @@ struct ContentView: View {
         let regex = try! NSRegularExpression(pattern: "(.)\\1\\1")
         // regex for the same character three times in a row
         return regex.firstMatch(in: str, range: NSRange(str.startIndex..., in: str)) != nil
+    }
+    
+    func checkForIncluded(_ str: String, includeUppercase: Bool, includeLowercase: Bool, includeNumbers: Bool, includeSpecial: Bool) -> Bool {
+        if includeUppercase { // User checked includeUppercase
+            var containsUppercase = false
+            let uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            for char in uppercase {
+                if str.contains(char) {
+                    containsUppercase = true
+                    break
+                }
+            }
+            if !containsUppercase { // checked all uppercase chars, none in str
+                return false
+            }
+        }
+        
+        if includeLowercase { // User checked includeLowercase
+            var containsLowercase = false
+            let lowercase = "abcdefghijklmnopqrstuvwxyz"
+            for char in lowercase {
+                if str.contains(char) {
+                    containsLowercase = true
+                    break
+                }
+            }
+            if !containsLowercase { // checked all lowercase chars, none in str
+                return false
+            }
+        }
+        
+        if includeNumbers { // User checked includeNumbers
+            var containsNumber = false
+            let numbers = "1234567890"
+            for char in numbers {
+                if str.contains(char) {
+                    containsNumber = true
+                    break
+                }
+            }
+            if !containsNumber { // checked all numbers, none in str
+                return false
+            }
+        }
+        
+        if includeSpecial { // User checked includeSpecial
+            var containsSpecial = false
+            let special = "!@.-_*"
+            for char in special {
+                if str.contains(char) {
+                    containsSpecial = true
+                    break
+                }
+            }
+            if !containsSpecial { // checked all special chars, none in str
+                return false
+            }
+        }
+        return true
     }
     
     func copyToClipboard(_ text: String) {
